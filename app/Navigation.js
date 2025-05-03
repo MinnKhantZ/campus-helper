@@ -7,6 +7,7 @@ import MapScreen from "./screens/MapScreen";
 import ClubsScreen from "./screens/ClubsScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import MarketplaceScreen from "./screens/MarketplaceScreen";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,12 +26,23 @@ const StackGroup = () => {
 const Drawer = createDrawerNavigator();
 
 const DrawerGroup = () => {
-  const screenOptions = {
-    // headerShown: false,
-  };
 
   return (
-    <Drawer.Navigator screenOptions={screenOptions}>
+    <Drawer.Navigator screenOptions={({ route }) => ({
+      drawerIcon: ({ focused, color, size }) => {
+        let iconName;
+  
+        if (route.name === 'Home') {
+          iconName = focused ? 'home' : 'home-outline';
+        } else if (route.name === 'Marketplace') {
+          iconName = focused ? 'shopping' : 'shopping-outline';
+        } else if (route.name === 'Clubs') {
+          iconName = focused ? 'account-group' : 'account-group-outline';
+        }
+  
+        return <Icon name={iconName} size={size} color={color} />;
+      },
+    })}>
       <Drawer.Screen name="Home" component={TabGroup} />
       <Drawer.Screen name="Marketplace" component={MarketplaceScreen} />
       <Drawer.Screen name="Clubs" component={ClubsScreen} />
@@ -51,14 +63,29 @@ const TabGroup = () => {
       <Tab.Screen
         name="Calendar"
         component={CalendarScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="calendar" color={color} size={size} />
+          ),
+        }}
       />
       <Tab.Screen
         name="TimeTable"
         component={TimeTableScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="clock-time-four-outline" color={color} size={size} />
+          ),
+        }}
       />
       <Tab.Screen
         name="Map"
         component={MapScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="map-marker" color={color} size={size} />
+          ),
+        }}
       />
     </Tab.Navigator>
   );
