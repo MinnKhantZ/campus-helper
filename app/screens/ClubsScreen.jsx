@@ -1,10 +1,10 @@
-import { SafeAreaView, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 
 const ClubsScreen = () => {
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <Text>Clubs Screen</Text>
-        </SafeAreaView>
+        </View>
     )
 }
 

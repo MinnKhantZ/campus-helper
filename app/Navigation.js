@@ -1,13 +1,14 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CalendarScreen from "./screens/CalendarScreen";
+import EventsScreen from "./screens/EventsScreen";
 import TimeTableScreen from "./screens/TimeTableScreen";
 import MapScreen from "./screens/MapScreen";
 import ClubsScreen from "./screens/ClubsScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import MarketplaceScreen from "./screens/MarketplaceScreen";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import EventAddScreen from "./screens/EventAddScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ const StackGroup = () => {
   return (
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen name="TabGroup" component={DrawerGroup} />
+      <Stack.Screen name="EventAdd" component={EventAddScreen} />
     </Stack.Navigator>
   );
 };
@@ -61,8 +63,8 @@ const TabGroup = () => {
   return (
     <Tab.Navigator screenOptions={screenOptions} backBehavior="history">
       <Tab.Screen
-        name="Calendar"
-        component={CalendarScreen}
+        name="Events"
+        component={EventsScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="calendar" color={color} size={size} />

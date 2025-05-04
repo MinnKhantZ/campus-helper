@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
 const campusLocations = [
@@ -29,7 +29,7 @@ const MapScreen = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <MapView 
                 ref={mapRef}
                 style={styles.map}
@@ -60,7 +60,7 @@ const MapScreen = () => {
             <View style={{ position: 'absolute', bottom: 60, right: 20 }}>
                 <Button title="Focus on Dean" onPress={() => {focusOnMarker(1)}} />
             </View>
-        </SafeAreaView>
+        </View>
     )
 }
 
