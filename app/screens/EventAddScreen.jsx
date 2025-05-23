@@ -3,20 +3,22 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import ScreenHeader from "../components/ScreenHeader";
+import { useCreateEventMutation } from "../api/Event";
 
 const EventAddScreen = ({ navigation }) => {
   const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("");
+  const [place, setPlace] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
+  const [createEvent, { isLoading }] = useCreateEventMutation();
 
   const formatTime = (date) =>
     date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -29,17 +31,21 @@ const EventAddScreen = ({ navigation }) => {
     if (selectedDate) setDate(selectedDate);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newEvent = {
-      id: Date.now().toString(),
       title,
-      date: formatDate(date),
-      time: formatTime(date),
-      location,
       description,
+      date,
+      place,
     };
     console.log("New Event:", newEvent);
-    // You can now handle the event (e.g. send to API, save to state)
+    
+    try {
+      const event = await createEvent(newEvent);
+      console.log("Event created successfully: ", event);
+    } catch (error) {
+      console.error("Error creating event: ", error);
+    }
   };
 
   return (
@@ -72,12 +78,12 @@ const EventAddScreen = ({ navigation }) => {
           />
         )}
 
-        <Text style={styles.label}>Location</Text>
+        <Text style={styles.label}>Place</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter location"
-          value={location}
-          onChangeText={setLocation}
+          placeholder="Enter place"
+          value={place}
+          onChangeText={setPlace}
         />
 
         <Text style={styles.label}>Description</Text>
@@ -91,7 +97,17 @@ const EventAddScreen = ({ navigation }) => {
         />
 
         <View style={styles.buttonContainer}>
-          <Button title="Save Event" onPress={handleSubmit} color="#007AFF" />
+          <TouchableOpacity
+            style={[styles.button, isLoading && styles.buttonDisabled]}
+            onPress={handleSubmit}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ActivityIndicator color="#ffffff" />
+            ) : (
+              <Text style={styles.buttonText}>Save Event</Text>
+            )}
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -138,6 +154,20 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 20,
+  },
+  button: {
+    backgroundColor: "#007AFF",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonDisabled: {
+    opacity: 0.6,
+  },
+  buttonText: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

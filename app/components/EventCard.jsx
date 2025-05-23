@@ -1,13 +1,20 @@
 import { View, Text, StyleSheet } from "react-native"
 
 const EventCard = ( event ) => {
+    const date = new Date(event.date);
+    const formatTime = (date) =>
+        date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+    const formatDate = (date) =>
+        date.toISOString().split("T")[0]; // YYYY-MM-DD
+    
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>{event.title}</Text>
                 <View style={styles.dateTime}>
-                    <Text style={styles.date}>{event.date}</Text>
-                    <Text style={styles.time}>{event.time}</Text>
+                    <Text style={styles.date}>{formatDate(date)}</Text>
+                    <Text style={styles.time}>{formatTime(date)}</Text>
                 </View>
             </View>
             <View style={styles.body}>
