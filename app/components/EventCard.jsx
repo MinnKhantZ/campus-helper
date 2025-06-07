@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet } from "react-native"
+import { View, Text, StyleSheet } from "react-native";
+import Colors from "../constants/Colors";
 
 const EventCard = ( event ) => {
     const date = new Date(event.date);
@@ -6,8 +7,8 @@ const EventCard = ( event ) => {
         date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
     const formatDate = (date) =>
-        date.toISOString().split("T")[0]; // YYYY-MM-DD
-    
+        date.toISOString().split("T")[0];
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -22,56 +23,63 @@ const EventCard = ( event ) => {
                 <Text style={styles.description}>{event.description}</Text>
             </View>
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginVertical: 10,
+        width: "90%",
+        alignSelf: "center",
+        marginVertical: 12,
+        borderRadius: 12,
+        backgroundColor: Colors.white,
+        shadowColor: Colors.black,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
     },
     header: {
-        width: "90%",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 10,
-        backgroundColor: "skyblue",
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
+        padding: 16,
+        backgroundColor: Colors.primary,
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12,
     },
     body: {
-        width: "90%",
-        padding: 10,
-        backgroundColor: "#fff",
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
+        padding: 16,
+        backgroundColor: Colors.background,
+        borderBottomLeftRadius: 12,
+        borderBottomRightRadius: 12,
     },
     dateTime: {
-        fontSize: 16,
-        color: "#888",
+        alignItems: "flex-end",
     },
     title: {
-        fontSize: 20,
-        fontWeight: "bold",
-        color: "white",
+        fontSize: 18,
+        fontWeight: "700",
+        color: Colors.white,
+        maxWidth: "70%",
     },
     date: {
-        fontSize: 16,
-        color: "white",
+        fontSize: 14,
+        color: Colors.white,
     },
     time: {
-        fontSize: 16,
-        color: "white",
+        fontSize: 14,
+        color: Colors.white,
     },
     location: {
         fontSize: 16,
+        color: Colors.black,
+        marginBottom: 6,
     },
     description: {
-        fontSize: 16,
-    }
-})
+        fontSize: 15,
+        color: Colors.black,
+    },
+});
 
 export default EventCard;

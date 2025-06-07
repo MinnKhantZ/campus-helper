@@ -4,6 +4,7 @@ import MapView from "react-native-maps";
 import { Surface } from "react-native-paper";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import CampusMarker from "../components/CampusMarker";
+import Colors from "../constants/Colors";
 
 const campusLocations = [
   {
@@ -95,7 +96,7 @@ const campusLocations = [
 const MapScreen = () => {
   const mapRef = useRef(null);
   const [selected, setSelected] = useState(null);
-
+    
   const focusOnMarker = (index) => {
     const location = campusLocations[index];
     setSelected(location);
@@ -111,55 +112,55 @@ const MapScreen = () => {
 
   return (
     <View style={styles.container}>
-      <MapView
-        ref={mapRef}
-        style={styles.map}
-        initialRegion={{
-          latitude: 22.03042,
-          longitude: 96.10138,
-          latitudeDelta: 0.004,
-          longitudeDelta: 0.004,
-        }}
-        customMapStyle={[
-            {
-            featureType: "poi",
-            elementType: "labels",
-            stylers: [{ visibility: "off" }],
-            },
-        ]}
-      >
-        {campusLocations.map((location) => (
-            <CampusMarker key={location.id} location={location} />
-        ))}
-      </MapView>
+        <MapView
+            ref={mapRef}
+            style={styles.map}
+            initialRegion={{
+                latitude: 22.03042,
+                longitude: 96.10138,
+                latitudeDelta: 0.004,
+                longitudeDelta: 0.004,
+            }}
+            customMapStyle={[
+                {
+                  featureType: "poi",
+                  elementType: "labels",
+                  stylers: [{ visibility: "off" }],
+                },
+            ]}
+        >
+            {campusLocations.map((location) => (
+                <CampusMarker key={location.id} location={location} />
+            ))}
+        </MapView>
 
-      {/* Navigation Buttons */}
-      <Surface style={styles.navBar} elevation={4}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {campusLocations.map((loc, index) => (
-            <TouchableOpacity
-                key={loc.id}
-                style={styles.navButton}
-                onPress={() => focusOnMarker(index)}
-            >
-                <MaterialIcons name={loc.icon} size={28} color="#6200ee" />
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </Surface>
+        {/* Navigation Buttons */}
+        <Surface style={styles.navBar} elevation={4}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {campusLocations.map((loc, index) => (
+                <TouchableOpacity
+                    key={loc.id}
+                    style={styles.navButton}
+                    onPress={() => focusOnMarker(index)}
+                >
+                    <MaterialIcons name={loc.icon} size={28} color={Colors.primary} />
+                </TouchableOpacity>
+            ))}
+            </ScrollView>
+        </Surface>
 
-      {/* Info Card */}
-      {selected && (
-        <View style={styles.infoCard}>
-          <Text style={styles.infoTitle}>{selected.name}</Text>
-          <Text style={styles.infoText}>
-            Lat: {selected.coordinate.latitude.toFixed(5)}
-          </Text>
-          <Text style={styles.infoText}>
-            Lon: {selected.coordinate.longitude.toFixed(5)}
-          </Text>
-        </View>
-      )}
+        {/* Info Card */}
+        {selected && (
+            <View style={styles.infoCard}>
+            <Text style={styles.infoTitle}>{selected.name}</Text>
+            <Text style={styles.infoText}>
+                Lat: {selected.coordinate.latitude.toFixed(5)}
+            </Text>
+            <Text style={styles.infoText}>
+                Lon: {selected.coordinate.longitude.toFixed(5)}
+            </Text>
+            </View>
+        )}
     </View>
   );
 };
@@ -175,17 +176,17 @@ const styles = StyleSheet.create({
     padding: 6,
     borderRadius: 12,
     flexDirection: "row",
-    backgroundColor: "#ffffffee",
+    backgroundColor: `${Colors.surface}ee`,
   },
   navButton: {
     marginHorizontal: 6,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: Colors.background,
     borderRadius: 24,
     width: 48,
     height: 48,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: Colors.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
     bottom: 110,
     left: 20,
     right: 20,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.surface,
     borderRadius: 10,
     padding: 12,
     elevation: 5,
@@ -203,11 +204,11 @@ const styles = StyleSheet.create({
   infoTitle: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#6200ee",
+    color: Colors.primary,
   },
   infoText: {
     fontSize: 14,
-    color: "#333",
+    color: Colors.gray,
   },
 });
 

@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import ScreenHeader from "../components/ScreenHeader";
 import { useCreateEventMutation } from "../api/Event";
+import Colors from "../constants/Colors"; // Import the Colors constant
 
 const EventAddScreen = ({ navigation }) => {
   const [title, setTitle] = useState("");
@@ -56,6 +57,7 @@ const EventAddScreen = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Enter title"
+          placeholderTextColor={Colors.gray}
           value={title}
           onChangeText={setTitle}
         />
@@ -75,6 +77,7 @@ const EventAddScreen = ({ navigation }) => {
             mode="datetime"
             display="default"
             onChange={handleChange}
+            accentColor={Colors.primary}
           />
         )}
 
@@ -82,6 +85,7 @@ const EventAddScreen = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Enter place"
+          placeholderTextColor={Colors.gray}
           value={place}
           onChangeText={setPlace}
         />
@@ -90,6 +94,7 @@ const EventAddScreen = ({ navigation }) => {
         <TextInput
           style={[styles.input, styles.multiline]}
           placeholder="Enter description"
+          placeholderTextColor={Colors.gray}
           multiline
           numberOfLines={4}
           value={description}
@@ -103,7 +108,7 @@ const EventAddScreen = ({ navigation }) => {
             disabled={isLoading}
           >
             {isLoading ? (
-              <ActivityIndicator color="#ffffff" />
+              <ActivityIndicator color={Colors.white} />
             ) : (
               <Text style={styles.buttonText}>Save Event</Text>
             )}
@@ -117,7 +122,7 @@ const EventAddScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9F9F9",
+    backgroundColor: Colors.background,
   },
   form: {
     marginHorizontal: 20,
@@ -128,14 +133,16 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
     marginBottom: 5,
+    color: Colors.primaryDark,
   },
   input: {
-    backgroundColor: "#FFF",
+    backgroundColor: Colors.surface,
     borderRadius: 8,
     padding: 12,
-    borderColor: "#DDD",
+    borderColor: Colors.gray,
     borderWidth: 1,
     fontSize: 16,
+    color: Colors.black,
   },
   multiline: {
     height: 100,
@@ -144,28 +151,29 @@ const styles = StyleSheet.create({
   dateButton: {
     padding: 12,
     borderRadius: 8,
-    backgroundColor: "#FFF",
-    borderColor: "#DDD",
+    backgroundColor: Colors.surface,
+    borderColor: Colors.gray,
     borderWidth: 1,
   },
   dateText: {
     fontSize: 16,
-    color: "#333",
+    color: Colors.black,
   },
   buttonContainer: {
     marginTop: 20,
   },
   button: {
-    backgroundColor: "#007AFF",
+    backgroundColor: Colors.primary,
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
   },
   buttonDisabled: {
     opacity: 0.6,
+    backgroundColor: Colors.primaryLight,
   },
   buttonText: {
-    color: "#ffffff",
+    color: Colors.white,
     fontSize: 16,
     fontWeight: "bold",
   },
