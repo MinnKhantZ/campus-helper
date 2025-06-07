@@ -18,8 +18,28 @@ const EventAddScreen = ({ navigation }) => {
   const [place, setPlace] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(new Date());
-  const [showPicker, setShowPicker] = useState(false);
   const [createEvent, { isLoading }] = useCreateEventMutation();
+
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+
+  // For showing pickers separately
+  const showDateMode = () => setShowDatePicker(true);
+  const showTimeMode = () => setShowTimePicker(true);
+
+  const handleDateChange = (event, selectedDate) => {
+    setShowDatePicker(false);
+    if (event.type === "set" && selectedDate) {
+      setDate((prev) => new Date(selectedDate.setHours(prev.getHours(), prev.getMinutes())));
+    }
+  };
+
+  const handleTimeChange = (event, selectedTime) => {
+    setShowTimePicker(false);
+    if (event.type === "set" && selectedTime) {
+      setDate((prev) => new Date(prev.setHours(selectedTime.getHours(), selectedTime.getMinutes())));
+    }
+  };
 
   const formatTime = (date) =>
     date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -27,12 +47,8 @@ const EventAddScreen = ({ navigation }) => {
   const formatDate = (date) =>
     date.toISOString().split("T")[0]; // YYYY-MM-DD
 
-  const handleChange = (event, selectedDate) => {
-    setShowPicker(false);
-    if (selectedDate) setDate(selectedDate);
-  };
-
   const handleSubmit = async () => {
+    if (!title || !description || !date || !place) return;
     const newEvent = {
       title,
       description,
@@ -46,6 +62,8 @@ const EventAddScreen = ({ navigation }) => {
       console.log("Event created successfully: ", event);
     } catch (error) {
       console.error("Error creating event: ", error);
+    } finally {
+      navigation.goBack();
     }
   };
 
@@ -63,21 +81,28 @@ const EventAddScreen = ({ navigation }) => {
         />
 
         <Text style={styles.label}>Date & Time</Text>
-        <TouchableOpacity
-          style={styles.dateButton}
-          onPress={() => setShowPicker(true)}
-        >
-          <Text style={styles.dateText}>
-            {formatDate(date)} - {formatTime(date)}
-          </Text>
+
+        <TouchableOpacity style={styles.dateButton} onPress={showDateMode}>
+          <Text style={styles.dateText}>{formatDate(date)}</Text>
         </TouchableOpacity>
-        {showPicker && (
+        {showDatePicker && (
           <DateTimePicker
             value={date}
-            mode="datetime"
+            mode="date"
             display="default"
-            onChange={handleChange}
-            accentColor={Colors.primary}
+            onChange={handleDateChange}
+          />
+        )}
+
+        <TouchableOpacity style={styles.dateButton} onPress={showTimeMode}>
+          <Text style={styles.dateText}>{formatTime(date)}</Text>
+        </TouchableOpacity>
+        {showTimePicker && (
+          <DateTimePicker
+            value={date}
+            mode="time"
+            display="default"
+            onChange={handleTimeChange}
           />
         )}
 

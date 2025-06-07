@@ -1,29 +1,67 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert, TouchableOpacity } from "react-native";
 import Colors from "../constants/Colors";
+import { useState } from "react";
+import { useDeleteEventMutation } from "../api/Event";
 
 const EventCard = ( event ) => {
-    const date = new Date(event.date);
-    const formatTime = (date) =>
-        date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleteEvent] = useDeleteEventMutation();
 
-    const formatDate = (date) =>
-        date.toISOString().split("T")[0];
+  const date = new Date(event.date);
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.title}>{event.title}</Text>
-                <View style={styles.dateTime}>
-                    <Text style={styles.date}>{formatDate(date)}</Text>
-                    <Text style={styles.time}>{formatTime(date)}</Text>
-                </View>
-            </View>
-            <View style={styles.body}>
-                <Text style={styles.location}>{event.location}</Text>
-                <Text style={styles.description}>{event.description}</Text>
-            </View>
+  const formatTime = (date) =>
+    date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+  const formatDate = (date) =>
+    date.toISOString().split("T")[0];
+
+  const handleLongPress = () => {
+    setShowDelete(true);
+  };
+
+  const handlePress = () => {
+    setShowDelete(false);
+  }
+
+  const handleDelete = async () => {
+    Alert.alert("Confirm Delete", "Are you sure?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await deleteEvent(event.id);
+            setShowDelete(false);
+          } catch (err) {
+            console.error("Delete failed", err);
+          }
+        },
+      },
+    ]);
+  };
+
+  return (
+    <TouchableOpacity onLongPress={handleLongPress} onPress={handlePress} activeOpacity={0.7}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>{event.title}</Text>
+          <View style={styles.dateTime}>
+            <Text style={styles.date}>{formatDate(date)}</Text>
+            <Text style={styles.time}>{formatTime(date)}</Text>
+          </View>
         </View>
-    );
+        <View style={styles.body}>
+          <Text style={styles.description}>{event.description}</Text>
+        </View>
+        {showDelete && (
+          <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+            <Text style={styles.deleteText}>Delete</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </TouchableOpacity>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -32,6 +70,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         marginVertical: 12,
         borderRadius: 12,
+        overflow: "hidden",
         backgroundColor: Colors.white,
         shadowColor: Colors.black,
         shadowOffset: { width: 0, height: 2 },
@@ -45,14 +84,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 16,
         backgroundColor: Colors.primary,
-        borderTopLeftRadius: 12,
-        borderTopRightRadius: 12,
     },
     body: {
         padding: 16,
         backgroundColor: Colors.background,
-        borderBottomLeftRadius: 12,
-        borderBottomRightRadius: 12,
     },
     dateTime: {
         alignItems: "flex-end",
@@ -79,6 +114,15 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 15,
         color: Colors.black,
+    },
+    deleteButton: {
+        backgroundColor: "red",
+        padding: 8,
+        alignItems: "center",
+    },
+    deleteText: {
+        color: "white",
+        fontWeight: "bold",
     },
 });
 

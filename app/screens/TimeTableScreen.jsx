@@ -119,10 +119,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 4,
+    overflow: "hidden",
     elevation: 2,
   },
   headerRow: {
     flexDirection: "row",
+    backgroundColor: Colors.primaryDark,
     borderBottomWidth: 1,
     borderBottomColor: Colors.gray + "30",
   },
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
   },
   dayHeaderText: {
     fontWeight: "500",
-    color: Colors.primaryDark,
+    color: Colors.white,
   },
   periodRow: {
     flexDirection: "row",
