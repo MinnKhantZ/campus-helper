@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import ScreenHeader from "../components/ScreenHeader";
 import { useCreateEventMutation } from "../api/Event";
-import Colors from "../constants/Colors"; // Import the Colors constant
+import Colors from "../constants/Colors";
 
 const EventAddScreen = ({ navigation }) => {
   const [title, setTitle] = useState("");
@@ -23,7 +23,6 @@ const EventAddScreen = ({ navigation }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
-  // For showing pickers separately
   const showDateMode = () => setShowDatePicker(true);
   const showTimeMode = () => setShowTimePicker(true);
 
